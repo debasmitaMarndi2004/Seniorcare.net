@@ -1,9 +1,22 @@
 'use client';
 import {useEffect} from 'react';
-export default function OriginalInteractions(){
+export default function OriginalInteractions({turnstileSiteKey}:{turnstileSiteKey:string}){
  useEffect(()=>{
   const root=document.getElementById('original-design');if(!root)return;
   const modal=root.querySelector<HTMLElement>('#modal');
+  const turnstileBox=root.querySelector<HTMLElement>('.cf-turnstile');
+  let turnstileScript:HTMLScriptElement|null=null;
+  if(turnstileBox){
+   if(turnstileSiteKey&&turnstileSiteKey!=='YOUR_CLOUDFLARE_TURNSTILE_SITE_KEY'){
+    turnstileBox.dataset.sitekey=turnstileSiteKey;
+    turnstileScript=document.createElement('script');
+    turnstileScript.src='https://challenges.cloudflare.com/turnstile/v0/api.js';
+    turnstileScript.async=true;turnstileScript.defer=true;
+    document.head.appendChild(turnstileScript);
+   }else{
+    turnstileBox.textContent='Contact form security verification is not configured yet.';
+   }
+  }
   const nav=root.querySelector<HTMLElement>('#nav, .links');
   const menuButton=root.querySelector<HTMLButtonElement>('#menu');
   let previous:HTMLElement|null=null;
@@ -71,7 +84,7 @@ export default function OriginalInteractions(){
    finally{if(button)button.disabled=false}
   }
   root.addEventListener('click',click);root.addEventListener('submit',submit);document.addEventListener('keydown',key);
-  return ()=>{root.removeEventListener('click',click);root.removeEventListener('submit',submit);document.removeEventListener('keydown',key);document.body.style.overflow='';backdrop.remove()};
- },[]);
+  return ()=>{root.removeEventListener('click',click);root.removeEventListener('submit',submit);document.removeEventListener('keydown',key);document.body.style.overflow='';backdrop.remove();turnstileScript?.remove()};
+ },[turnstileSiteKey]);
  return null;
 }
