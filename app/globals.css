@@ -1,3 +1,21 @@
-/* Approved per-page CSS is loaded alongside the original HTML markup. */
-html {scroll-behavior:smooth}
-body {margin:0}
+/* Approved original page styles remain in public/*.css. Shared mobile drawer overrides. */
+html{scroll-behavior:smooth}
+body{margin:0}
+@media(max-width:899px){
+ .original-design .hdr .links{
+  display:flex!important;position:fixed!important;top:0!important;right:0!important;left:auto!important;
+  width:min(340px,86vw)!important;height:100dvh!important;max-height:100dvh!important;
+  padding:88px 22px 28px!important;background:#fff!important;box-shadow:-15px 0 50px #220d3038!important;
+  flex-direction:column!important;gap:4px!important;overflow-y:auto!important;
+  transform:translateX(110%)!important;visibility:hidden!important;
+  transition:transform .25s ease,visibility .25s!important;z-index:1002!important;
+ }
+ .original-design .hdr .links.open{transform:translateX(0)!important;visibility:visible!important}
+ .original-design .hdr .links a{display:block;padding:16px 12px!important;border-bottom:1px solid #f0e4f3!important}
+ .original-design .hdr .menu{position:relative;z-index:1004}
+ .original-design .hdr .nav-cta{margin-top:16px!important}
+ .original-design .drawer-backdrop{position:fixed;inset:0;background:#180d25a8;z-index:1001;opacity:0;pointer-events:none;transition:opacity .25s}
+ .original-design .drawer-backdrop.visible{opacity:1;pointer-events:auto}
+}
+@media(min-width:900px){.original-design .drawer-backdrop{display:none}}
+@media(prefers-reduced-motion:reduce){.original-design .hdr .links,.original-design .drawer-backdrop{transition:none!important}}
