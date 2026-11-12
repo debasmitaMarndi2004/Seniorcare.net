@@ -1,7 +1,7 @@
 import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 import Image from 'next/image';
-import parse, {domToReact, Element} from 'html-react-parser';
+import parse, {Element} from 'html-react-parser';
 import OriginalInteractions from './OriginalInteractions';
 const allowed=['home','care-services','senior-living-options','resources','contact'] as const;
 type PageName=(typeof allowed)[number];
