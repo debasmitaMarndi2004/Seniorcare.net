@@ -130,3 +130,7 @@ footer{padding:34px 0 18px;background:linear-gradient(110deg,#2b0d3c,#47165f);co
 .f-brand,.f-contact{grid-column:auto}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Senior living photography: fill the existing media frame without stretching or overflow. */
+.type-media{overflow:hidden;padding:0;background:#f3ecf6}
+.type-media img{display:block;width:100%;height:100%;aspect-ratio:16/10;object-fit:cover;object-position:center}
