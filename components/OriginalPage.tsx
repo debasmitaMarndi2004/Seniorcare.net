@@ -14,5 +14,5 @@ export default async function OriginalPage({name}:{name:PageName}){
   }
   // Preserve native SVG symbols and links from the approved source.
  }});
- return <><link rel="stylesheet" href={`/${name}.css`}/><div className="original-design" id="original-design">{content}</div><OriginalInteractions/></>;
+ return <><link rel="stylesheet" href={`/${name}.css`}/><div className="original-design" id="original-design">{content}</div><OriginalInteractions turnstileSiteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY||''}/></>;
 }
