@@ -6,7 +6,7 @@ import OriginalInteractions from './OriginalInteractions';
 const allowed=['home','care-services','senior-living-options','resources','contact'] as const;
 type PageName=(typeof allowed)[number];
 export default async function OriginalPage({name}:{name:PageName}){
- const html=await readFile(path.join(process.cwd(),'public',name+'.html'),'utf8');
+ const [html,mobileNavCss]=await Promise.all([readFile(path.join(process.cwd(),'public',name+'.html'),'utf8'),readFile(path.join(process.cwd(),'app','globals.css'),'utf8')]);
  const content=parse(html,{replace(node){
   if(node instanceof Element && node.name==='img'){
    const a=node.attribs;const width=Number(a.width),height=Number(a.height);
@@ -14,5 +14,5 @@ export default async function OriginalPage({name}:{name:PageName}){
   }
   // Preserve native SVG symbols and links from the approved source.
  }});
- return <><link rel="stylesheet" href={`/${name}.css`}/><div className="original-design" id="original-design">{content}</div><OriginalInteractions turnstileSiteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY||''}/></>;
+ return <><link rel="stylesheet" href={`/${name}.css`}/><div className="original-design" id="original-design">{content}<style dangerouslySetInnerHTML={{__html:mobileNavCss}} /></div><OriginalInteractions turnstileSiteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY||''}/></>;
 }
