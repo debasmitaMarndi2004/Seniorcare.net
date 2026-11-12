@@ -147,3 +147,7 @@ footer{padding:34px 0 18px;background:linear-gradient(110deg,#2b0d3c,#47165f);co
 .f-brand,.f-contact{grid-column:auto}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+
+/* Featured guide photos: keep consistent card proportions across screen sizes. */
+.g-img{overflow:hidden;padding:0}
+.g-img img{display:block;width:100%;height:100%;aspect-ratio:16/8;object-fit:cover;object-position:center}
