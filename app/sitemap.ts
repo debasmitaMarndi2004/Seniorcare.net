@@ -1,0 +1,1 @@
+import type {MetadataRoute} from 'next';export default function sitemap():MetadataRoute.Sitemap{const base=process.env.SITE_URL||'https://senior.care';return ['/','/senior-living-options','/care-services','/resources','/contact'].map(path=>({url:new URL(path,base).toString(),changeFrequency:'monthly',priority:path==='/'?1:0.7}))}
