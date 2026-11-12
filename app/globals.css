@@ -1,1 +1,3 @@
-/* Original approved HTML CSS is preserved per page for visual fidelity. */
+/* Approved per-page CSS is loaded alongside the original HTML markup. */
+html {scroll-behavior:smooth}
+body {margin:0}
