@@ -4,16 +4,40 @@ export default function OriginalInteractions(){
  useEffect(()=>{
   const root=document.getElementById('original-design');if(!root)return;
   const modal=root.querySelector<HTMLElement>('#modal');
-  const menu=root.querySelector<HTMLElement>('.nav-links, .nav-menu, #mobile-menu');
+  const nav=root.querySelector<HTMLElement>('#nav, .links');
+  const menuButton=root.querySelector<HTMLButtonElement>('#menu');
   let previous:HTMLElement|null=null;
+  const routes:Record<string,string>={
+   'Care Options':'/senior-living-options','Services':'/care-services',
+   'Resources':'/resources','Contact Us':'/contact',
+   'About Us':'/contact','Care Guides':'/resources',
+   'Articles & Tips':'/resources','Assisted Living':'/senior-living-options',
+   'Memory Care':'/senior-living-options','Independent Living':'/senior-living-options',
+   'In-Home Care':'/care-services','Nursing Homes':'/senior-living-options',
+   'Continuing Care':'/senior-living-options',
+  };
+  root.querySelectorAll<HTMLAnchorElement>('a').forEach(link=>{
+   const label=link.textContent?.trim()||'';
+   if(routes[label])link.href=routes[label];
+   if(link.classList.contains('brand'))link.href='/';
+  });
+  // Add a direct Contact link to the mobile menu while retaining original styling.
+  if(nav&&!nav.querySelector('a[href="/contact"]')){
+   const contact=document.createElement('a');contact.href='/contact';contact.textContent='Contact Us';
+   nav.insertBefore(contact,nav.querySelector('.nav-cta'));
+  }
+  function closeMenu(){nav?.classList.remove('open');menuButton?.setAttribute('aria-expanded','false')}
+  function closeModal(){modal?.classList.remove('open','show','active');modal?.setAttribute('aria-hidden','true');previous?.focus()}
   function click(e:MouseEvent){
    const target=e.target as Element;
+   if(target.closest('#menu')){e.preventDefault();const open=nav?.classList.toggle('open')||false;menuButton?.setAttribute('aria-expanded',String(open));return}
    const action=target.closest('[data-action]')?.getAttribute('data-action');
-   if(action==='open'){e.preventDefault();previous=document.activeElement as HTMLElement;modal?.classList.add('show','open','active');modal?.setAttribute('aria-hidden','false');modal?.querySelector<HTMLElement>('button')?.focus()}
-   if(action==='close'){e.preventDefault();modal?.classList.remove('show','open','active');modal?.setAttribute('aria-hidden','true');previous?.focus()}
-   if(target.closest('.menu, [aria-label="Open menu"]')){menu?.classList.toggle('open');menu?.classList.toggle('show');}
+   if(action==='open'){e.preventDefault();previous=document.activeElement as HTMLElement;modal?.classList.add('open');modal?.setAttribute('aria-hidden','false');modal?.querySelector<HTMLElement>('button')?.focus();return}
+   if(action==='close'){e.preventDefault();closeModal();return}
+   if(target.closest('#nav a'))closeMenu();
+   if(target===modal)closeModal();
   }
-  function key(e:KeyboardEvent){if(e.key==='Escape'){modal?.classList.remove('show','open','active');previous?.focus();menu?.classList.remove('open','show')}}
+  function key(e:KeyboardEvent){if(e.key==='Escape'){closeMenu();closeModal()}}
   function submit(e:Event){if((e.target as Element).matches('form')){e.preventDefault();const note=(e.target as Element).querySelector<HTMLElement>('#form-status, .notice');if(note)note.textContent='This preview does not submit information. Please use the contact page for inquiries.'}}
   root.addEventListener('click',click);root.addEventListener('submit',submit);document.addEventListener('keydown',key);
   return ()=>{root.removeEventListener('click',click);root.removeEventListener('submit',submit);document.removeEventListener('keydown',key)};
